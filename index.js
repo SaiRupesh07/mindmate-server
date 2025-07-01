@@ -6,11 +6,20 @@ const cors = require('cors');
 
 dotenv.config();
 const app = express();
+
+// ✅ Enable CORS and JSON parsing
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/journal', journalRoutes);  // ✅ Route setup
+// ✅ Root route for health check or welcome message
+app.get('/', (req, res) => {
+  res.send('🚀 MindMate Backend is live and running!');
+});
 
+// ✅ Journal routes
+app.use('/api/journal', journalRoutes);
+
+// ✅ Connect to MongoDB and start server
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     app.listen(5000, () => {

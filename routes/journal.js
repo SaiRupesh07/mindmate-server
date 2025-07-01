@@ -2,7 +2,12 @@ const express = require('express');
 const router = express.Router();
 const JournalEntry = require('../models/JournalEntry');
 
-// POST /api/journal
+// ✅ Test Route: GET /api/journal
+router.get('/', (req, res) => {
+  res.json({ message: '✅ Journal API is live!' });
+});
+
+// ✅ POST /api/journal
 router.post('/', async (req, res) => {
   const { userId, mood, content } = req.body;
   try {
@@ -14,7 +19,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// GET /api/journal/:userId
+// ✅ GET /api/journal/:userId
 router.get('/:userId', async (req, res) => {
   const { userId } = req.params;
   try {
