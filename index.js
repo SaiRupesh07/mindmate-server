@@ -1,30 +1,33 @@
-// index.js
 const express  = require('express');
 const mongoose = require('mongoose');
 const dotenv   = require('dotenv');
 const cors     = require('cors');
 
-const journalRoutes = require('./routes/journal');
-
 // ▸ 1. Load .env
 dotenv.config();
 
+// ▸ 2. Initialize app
 const app = express();
 
-// ▸ 2. Global middleware
-app.use(cors());          // Allow frontend origin
-app.use(express.json());  // Parse JSON bodies
+// ▸ 3. Global middleware
+app.use(cors());         
+app.use(express.json());  
 
-// ▸ 3. Health‑check route
+// ▸ 4. Import routes
+const journalRoutes = require('./routes/journal');
+const chatRoutes    = require('./routes/chat');
+
+// ▸ 5. Health-check route
 app.get('/', (_req, res) => {
   res.send('🧠 MindMate backend is running!');
 });
 
-// ▸ 4. API routes
+// ▸ 6. API routes
 app.use('/api/journal', journalRoutes);
+app.use('/api/chat',    chatRoutes);   // ✅ safe now
 
-// ▸ 5. DB connection then start server
-const PORT = process.env.PORT || 5000;      // ← Render provides PORT
+// ▸ 7. DB connection then start server
+const PORT = process.env.PORT || 5000;
 
 mongoose
   .connect(process.env.MONGO_URI, {
@@ -33,11 +36,9 @@ mongoose
   })
   .then(() => {
     console.log('✅ MongoDB connected');
-    app.listen(PORT, () =>
-      console.log(`🚀 Server running on port ${PORT}`)
-    );
+    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
   })
   .catch((err) => {
     console.error('❌ MongoDB connection error:', err.message);
-    process.exit(1); // Crash so Render shows failure
+    process.exit(1);
   });
