@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "accepts": "^2.0.0",
+    "axios": "^1.10.0",
     "base64url": "^3.0.1",
     "body-parser": "^2.2.0",
     "bson": "^6.10.4",
